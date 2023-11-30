@@ -1,0 +1,36 @@
+image:
+  repository: ghcr.io/devfullcycle/fc3-kong-automation
+  tag: 1.0.0
+
+env:
+  prefix: /kong_prefix/
+  database: "off"
+  plugins: bundled,oidc,kong-jwt2header
+
+admin:
+  enabled: true
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+  tls:
+    parameters: []
+  labels:
+    enable-metrics: "true"
+
+postgresql:
+  enabled: false
+
+ingressController:
+  image:
+    repository: kong/kubernetes-ingress-controller
+    tag: "2.12"
+  enabled: true
+  installCRDs: false
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8100"
+
+proxy:
+  type: NodePort
